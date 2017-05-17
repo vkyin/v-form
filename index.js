@@ -1,29 +1,48 @@
 const Field = require('./field');
 const {
     VaildationError
-} =require('./errors');
+} = require('./errors');
 
 
 
 let VFormGetter = C => class extends C {
     constructor(originObject) {
         super(originObject);
-        Object.defineProperty(this, '__originObject', {
-            value: originObject
-        });
+
+        Object.defineProperties(this, {
+            '__originObject': {
+                value: originObject
+            }
+        })
     }
 
-    get(key) {
-        return new Field();
-    }
-
-    getFrom(key, ...propertieNames) {
+    getFrom(...propertieNames) {
         let obj = this.__originObject;
+        let key;
         propertieNames.forEach(name => {
+            key = name;
             obj = obj[name];
         });
-        let value = obj[key];
+        let value = obj;
         return new Field(key, value);
+    }
+
+    getFromBody(...propertieNames) {
+        let args = propertieNames;
+        args.unshift('body');
+        return this.getFrom.apply(this, args);
+    }
+
+    getFromQuery(...propertieNames) {
+        let args = propertieNames;
+        args.unshift('query');
+        return this.getFrom.apply(this, args);
+    }
+
+    getFromParam(...propertieNames) {
+        let args = propertieNames;
+        args.unshift('param');
+        return this.getFrom.apply(this, args);
     }
 }
 
