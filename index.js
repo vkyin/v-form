@@ -10,7 +10,8 @@ let VForm = function (C, ...Validators) {
                         originObject: originObject,
                         errorsArray: [],
                         errorsMap: {},
-                        hasError: false
+                        hasError: false,
+                        value: {}
                     }
                 }
             });
@@ -50,9 +51,10 @@ let VForm = function (C, ...Validators) {
                 let property = this[x];
                 let errorsArray = this.__reservedProperties__.errorsArray;
                 let errorsMap = this.__reservedProperties__.errorsMap;
+                let value = this.__reservedProperties__.value;
                 if (property instanceof Field) {
 
-                    this[x] = property.value;
+                    value[x] = property.value;
                     if (property.errors.length > 0) {
                         this.__reservedProperties__.hasError = true;
                         property.errors.forEach(e => {
@@ -81,6 +83,10 @@ let VForm = function (C, ...Validators) {
                 return this.__reservedProperties__.errorsArray;
             }
             return null;
+        }
+
+        value(){
+            return this.__reservedProperties__.value;
         }
     }
 }

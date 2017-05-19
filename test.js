@@ -66,8 +66,10 @@ let ctx = {
 
 let form = new ListForm(ctx).validate();
 
-console.log('form', form);
-console.log('errors', form.errors());
+console.log('form\n', form);
+
+console.log('form.value()\n', form.value());
+console.log('errors\n', form.errors());
 
 // console.log(new VaildationError('parma').name)
 // console.log(typeof new VaildationError('parma'))
